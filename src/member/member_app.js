@@ -16,7 +16,6 @@ import BookRouteScreen from './screens/books';
 
 import ReservedRouteScreen from './screens/reserved';
 import IssuedRouteScreen from './screens/issued';
-
 const IssuedRoute = () => <Text>Recents</Text>;
 
 const FinesRoute = () => <Text>Notifications</Text>;
@@ -25,13 +24,12 @@ const renderScene = BottomNavigation.SceneMap({
   books: () => <BookRouteScreen />,
   reserved: () => <ReservedRouteScreen />,
   issued: () => <IssuedRouteScreen />,
-//fines: FinesRoute,
+  //fines: FinesRoute,
 });
-
-const index = 0;
 
 export default MemberApp = ({navigation}) => {
   const [index, setIndex] = useState(0);
+
   const [routes] = useState([
     {
       key: 'books',

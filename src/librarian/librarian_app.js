@@ -15,6 +15,11 @@ import BookRouteScreen from './screens/books';
 
 import RequestsRouteScreen from './screens/reservations';
 import IssuedRouteScreen from './screens/issued';
+import {useDispatch} from 'react-redux';
+import {
+  fetchIssuedBooks,
+  initializeDashboard,
+} from '../redux/slices/librarian_slice';
 
 const IssuedRoute = () => <Text>Recents</Text>;
 
@@ -27,9 +32,7 @@ const renderScene = BottomNavigation.SceneMap({
   issued: () => <IssuedRouteScreen />,
 });
 
-const index = 0;
-
-export default App = () => {
+export default LibrarianApp = () => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     {
@@ -47,6 +50,11 @@ export default App = () => {
     {key: 'requests', title: 'Reservations', focusedIcon: 'abacus'},
     {key: 'issued', title: 'Issued', focusedIcon: 'history'},
   ]);
+
+  const dispatch = useDispatch();
+  dispatch(initializeDashboard());
+
+  dispatch(fetchIssuedBooks());
 
   return (
     <BottomNavigation

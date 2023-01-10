@@ -1,37 +1,126 @@
 import {React, useState} from 'react';
 
-import {ScrollView, StyleSheet, View, Image, TextInput} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Image,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 
 import {
   Text,
   Button,
   IconButton,
-  Portal,
   Paragraph,
   Dialog,
-  MD3LightTheme as Theme,
+  Portal,
+
+  useTheme,
 } from 'react-native-paper';
 
-import * as RootNavigation from '../../navigation_service';
+import {useSelector, useDispatch} from 'react-redux';
+import {LoadingDialog} from '../../common/loading_dialog';
 
-export default function AddEditBook() {
-  const [name, setName] = useState('');
-  const [author, setAuthor] = useState('');
-  const [description, setDescription] = useState('');
+import {
+  saveBook,
+  hideDialog,
+  bookSaved,
+  pickImage,
+} from '../../redux/slices/librarian_slice';
+
+export default function AddEditBook({route, navigation}) {
+  const {colors} = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      paddingHorizontal: 25,
+      backgroundColor: colors.background,
+    },
+    title: {
+      fontWeight: 'bold',
+      fontSize: 24,
+      color: colors.onBackground,
+      flex: 6,
+      marginHorizontal: 5,
+    },
+    header: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+      marginTop: 10,
+    },
+    cover: {
+      height: 270,
+      width: 200,
+      alignSelf: 'center',
+      backgroundColor: 'blue',
+      borderRadius: 8,
+      marginVertical: 10,
+    },
+    input: {
+      paddingHorizontal: 20,
+      backgroundColor: colors.surfaceVariant,
+      borderRadius: 5,
+      color: colors.onSurfaceVariant,
+      marginVertical: 10,
+    },
+  });
+
+  const original = route?.params?.original;
+
+  const [name, setName] = useState(original?.name ?? '');
+  const [author, setAuthor] = useState(original?.author ?? '');
+  const [description, setDescription] = useState(original?.description ?? '');
   const [visible, setVisible] = useState(false);
 
   const toggleDialog = () => setVisible(!visible);
 
+  const dispatch = useDispatch();
+  const dialog = useSelector(state => state.librarian.dialog);
+  const loading = useSelector(state => state.librarian.loading);
+  const saved = useSelector(state => state.librarian.saved);
+  const image = useSelector(state => state.librarian.image);
+
+  if (saved == true) {
+    if (original == undefined) {
+      navigation.goBack();
+    } else {
+      navigation.popToTop();
+    }
+
+    dispatch(bookSaved());
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <IconButton icon="close" size={24} onPress={() => {}} />
+        <IconButton
+          icon="close"
+          size={24}
+          onPress={() => navigation.goBack()}
+        />
+
         <Text style={styles.title}>Add book</Text>
+
         <Button
           mode="contained-tonal"
-          textColor={Theme.colors.primary}
+          textColor={colors.onBackground}
+          backgroundColor={colors.secondary}
           style={{flex: 3}}
-          onPress={() => {}}>
+          onPress={() =>
+            dispatch(
+              saveBook({
+                name: name,
+                author: author,
+                description: description,
+                bookId: original?.bookId,
+                image: image,
+              }),
+            )
+          }>
           Save
         </Button>
       </View>
@@ -40,74 +129,57 @@ export default function AddEditBook() {
         placeholder={'Enter book name...'}
         style={styles.input}
         value={name}
-        placeholderTextColor="#888"
-
         onChangeText={setName}
       />
+
       <TextInput
         placeholder={"Enter author's name..."}
         style={styles.input}
         value={author}
-        placeholderTextColor="#888"
-
         onChangeText={setAuthor}
       />
+
       <TextInput
         placeholder={'Enter book description...'}
         style={styles.input}
         value={description}
-        placeholderTextColor="#888"
         onChangeText={setDescription}
       />
 
       <Image
-        source={require('../../../assets/covers/the-color-purple.jpg')}
+        source={
+          image == undefined
+            ? require('../../../assets/icons/image.jpg')
+            : {uri: image}
+        }
         style={styles.cover}
       />
 
       <Button
         icon="image"
         mode="contained-tonal"
-        textColor="#118866"
-        backgroundColor="#dd2222dd"
+        textColor={colors.onBackground}
+        backgroundColor={colors.secondary}
         style={{marginHorizontal: 70, marginVertical: 10}}
-        onPress={() => {}}>
+        onPress={() => dispatch(pickImage())}>
         Add image
       </Button>
+
+      <Portal>
+        <Dialog
+          visible={dialog !== undefined}
+          onDismiss={() => dispatch(hideDialog())}>
+          <Dialog.Title>Save failed</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{dialog}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => dispatch(hideDialog())}>Ok</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
+      <LoadingDialog text={'Saving book...'} visible={loading} />
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 25,
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 24,
-    color: '#333',
-    flex: 6,
-    marginHorizontal: 5,
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  cover: {
-    height: 270,
-    width: 200,
-    alignSelf: 'center',
-    backgroundColor: 'blue',
-    borderRadius: 8,
-    marginVertical: 10,
-  },
-  input: {
-    paddingHorizontal: 20,
-    backgroundColor: '#0f0fff11',
-    borderRadius: 5,
-    marginVertical: 10,
-  },
-});
