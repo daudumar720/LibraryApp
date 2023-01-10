@@ -36,8 +36,8 @@ export default function BookDetailsScreenViewOnly({route, navigation}) {
       marginVertical: 8,
     },
     heading: {
-      color: '#228844',
-      backgroundColor: '#00aa4444',
+      color: colors.onTertiaryContainer,
+      backgroundColor: colors.tertiaryContainer,
       alignSelf: 'flex-start',
       paddingHorizontal: 10,
       paddingVertical: 3,

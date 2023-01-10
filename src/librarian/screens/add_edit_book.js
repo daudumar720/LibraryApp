@@ -16,7 +16,6 @@ import {
   Paragraph,
   Dialog,
   Portal,
-
   useTheme,
 } from 'react-native-paper';
 
@@ -62,9 +61,9 @@ export default function AddEditBook({route, navigation}) {
     },
     input: {
       paddingHorizontal: 20,
-      backgroundColor: colors.surfaceVariant,
       borderRadius: 5,
       color: colors.onSurfaceVariant,
+      backgroundColor: colors.surfaceVariant,
       marginVertical: 10,
     },
   });
@@ -107,7 +106,7 @@ export default function AddEditBook({route, navigation}) {
 
         <Button
           mode="contained-tonal"
-          textColor={colors.onBackground}
+          textColor={colors.onPrimaryContainer}
           backgroundColor={colors.secondary}
           style={{flex: 3}}
           onPress={() =>
@@ -130,6 +129,7 @@ export default function AddEditBook({route, navigation}) {
         style={styles.input}
         value={name}
         onChangeText={setName}
+        placeholderTextColor="#888"
       />
 
       <TextInput
@@ -137,13 +137,17 @@ export default function AddEditBook({route, navigation}) {
         style={styles.input}
         value={author}
         onChangeText={setAuthor}
+        placeholderTextColor="#888"
       />
 
       <TextInput
         placeholder={'Enter book description...'}
-        style={styles.input}
+        style={{...styles.input, lineHeight: 22}}
         value={description}
+        multiline={true}
+        numberOfLines={5}
         onChangeText={setDescription}
+        placeholderTextColor="#888"
       />
 
       <Image
@@ -158,7 +162,7 @@ export default function AddEditBook({route, navigation}) {
       <Button
         icon="image"
         mode="contained-tonal"
-        textColor={colors.onBackground}
+        textColor={colors.onPrimaryContainer}
         backgroundColor={colors.secondary}
         style={{marginHorizontal: 70, marginVertical: 10}}
         onPress={() => dispatch(pickImage())}>

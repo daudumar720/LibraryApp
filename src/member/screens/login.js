@@ -6,7 +6,6 @@ import {
   View,
   Image,
   TextInput,
-  ActivityIndicator,
 } from 'react-native';
 
 import {

@@ -49,8 +49,8 @@ export default function MemberBookDetailsScreen({route, navigation}) {
       marginVertical: 8,
     },
     heading: {
-      color: '#228844',
-      backgroundColor: '#00aa4444',
+      color: colors.onTertiaryContainer,
+      backgroundColor: colors.tertiaryContainer,
       alignSelf: 'flex-start',
       paddingHorizontal: 10,
       paddingVertical: 3,
@@ -61,6 +61,9 @@ export default function MemberBookDetailsScreen({route, navigation}) {
       color: colors.onBackground,
       marginHorizontal: 5,
       marginTop: 4,
+    },
+    reserveButton: {
+      marginBottom: 60
     },
   });
 
@@ -121,6 +124,7 @@ export default function MemberBookDetailsScreen({route, navigation}) {
       <View style={{height: 40}} />
       <Button
         mode="contained"
+        style={styles.reserveButton}
         onPress={() => setVisible(true)}
         disabled={isReserved}>
         {isReserved ? 'Reserved' : 'Reserve'}

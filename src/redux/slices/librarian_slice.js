@@ -1,30 +1,31 @@
 import {createSlice} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
-import firestore from '@react-native-firebase/firestore';
 import {formatDate} from '../../date_formatter';
 import {launchImageLibrary} from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 
+const initialState = {
+  booksStatus: 'loading',
+  reservedBooksStatus: 'loading',
+  issuedBooksStatus: 'loading',
+  books: undefined,
+  reservedBooks: undefined,
+  issuedBooks: undefined,
+  dialog: undefined,
+  loading: false,
+  saved: false,
+  booksCount: undefined,
+  issuedBooksCount: undefined,
+  reservedBooksCount: undefined,
+  totalFine: undefined,
+  searchQuery: '',
+  searchedBooks: undefined,
+  image: undefined,
+};
+
 const librarianSlice = createSlice({
   name: 'librarian',
-  initialState: {
-    booksStatus: 'loading',
-    reservedBooksStatus: 'loading',
-    issuedBooksStatus: 'loading',
-    books: undefined,
-    reservedBooks: undefined,
-    issuedBooks: undefined,
-    dialog: undefined,
-    loading: false,
-    saved: false,
-    booksCount: undefined,
-    issuedBooksCount: undefined,
-    reservedBooksCount: undefined,
-    totalFine: undefined,
-    searchQuery: '',
-    searchedBooks: undefined,
-    image: undefined,
-  },
+  initialState: initialState,
   reducers: {
     booksLoaded: (state, action) => {
       state.booksStatus = 'loaded';
@@ -234,9 +235,10 @@ export const fetchIssuedBooks = () => async dispatch => {
 };
 
 function calculateFine(dueDate) {
-  let lateDays = Date.now() - dueDate;
-  if (lateDays > 0) {
-    return (lateDays / 2592000000).toFixed(2);
+  let lateMilliseconds = Date.now() - dueDate;
+  if (lateMilliseconds > 0) {
+    let lateDays = lateMilliseconds / 86400000;
+    return (lateDays * 5).toFixed(0);
   }
 
   return 0;
@@ -278,6 +280,7 @@ export const saveBook = details => async dispatch => {
 
 export const deleteBook = book => async dispatch => {
   await firestore().collection('books').doc(book.bookId).delete();
+  await storage().ref(`books/${book.id}.jpg`).delete();
 };
 
 export const rejectReservationRequest = reservation => async dispatch => {

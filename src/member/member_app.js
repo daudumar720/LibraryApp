@@ -1,30 +1,16 @@
 import {React, useState} from 'react';
 
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {Appbar, BottomNavigation} from 'react-native-paper';
+import {BottomNavigation} from 'react-native-paper';
 
 import BookRouteScreen from './screens/books';
 
 import ReservedRouteScreen from './screens/reserved';
 import IssuedRouteScreen from './screens/issued';
-const IssuedRoute = () => <Text>Recents</Text>;
-
-const FinesRoute = () => <Text>Notifications</Text>;
 
 const renderScene = BottomNavigation.SceneMap({
   books: () => <BookRouteScreen />,
   reserved: () => <ReservedRouteScreen />,
   issued: () => <IssuedRouteScreen />,
-  //fines: FinesRoute,
 });
 
 export default MemberApp = ({navigation}) => {
@@ -37,14 +23,8 @@ export default MemberApp = ({navigation}) => {
       focusedIcon: 'book',
       unfocusedIcon: 'book-outline',
     },
-    {key: 'reserved', title: 'Reserved', focusedIcon: 'abacus'},
-    {key: 'issued', title: 'Issued', focusedIcon: 'history'},
-    // {
-    //   key: 'fines',
-    //   title: 'Fines',
-    //   focusedIcon: 'bell',
-    //   unfocusedIcon: 'bell-outline',
-    // },
+    {key: 'reserved', title: 'Reserved', focusedIcon: 'calendar-alert'},
+    {key: 'issued', title: 'Issued', focusedIcon: 'calendar-check'},
   ]);
 
   return (

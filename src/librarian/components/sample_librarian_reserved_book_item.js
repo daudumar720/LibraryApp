@@ -96,13 +96,13 @@ export default function SampleRequestBookItem({book}) {
         <View style={styles.buttonsContainer}>
           <Button
             mode="contained-tonal"
-            textColor={colors.onErrorContainer}
+            textColor={colors.tertiary}  
             onPress={() => setRejectionVisible(true)}>
             Reject
           </Button>
           <Button
             mode="contained-tonal"
-            textColor={colors.secondary}
+            textColor={colors.onPrimaryContainer}
             onPress={() => setIssueVisible(true)}>
             Issue
           </Button>

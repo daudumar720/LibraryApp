@@ -133,9 +133,10 @@ export const fetchIssuedBooks = () => async dispatch => {
 };
 
 function calculateFine(dueDate) {
-  let lateDays = Date.now() - dueDate;
-  if (lateDays > 0) {
-    return (lateDays / 2592000000).toFixed(2);
+  let lateMilliseconds = Date.now() - dueDate;
+  if (lateMilliseconds > 0) {
+    let lateDays = lateMilliseconds / 86400000;
+    return (lateDays * 5).toFixed(0);
   }
 
   return 0;

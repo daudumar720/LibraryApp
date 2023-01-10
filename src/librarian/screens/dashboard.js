@@ -82,9 +82,7 @@ export default function DashboardRouteScreen() {
     state => state.librarian.issuedBooksCount,
   );
 
-  const totalFine = useSelector(
-    state => state.librarian.totalFine,
-  );
+  const totalFine = useSelector(state => state.librarian.totalFine);
 
   const theme = useSelector(state => state.theme.theme);
 
@@ -152,7 +150,7 @@ export default function DashboardRouteScreen() {
                   }}>
                   $
                 </Text>
-                <Text style={styles.itemData}>{totalFine}</Text>
+                <Text style={styles.itemData}>{Number(totalFine)}</Text>
               </View>
 
               <Text style={{...styles.itemTitle, backgroundColor: '#cc5544'}}>

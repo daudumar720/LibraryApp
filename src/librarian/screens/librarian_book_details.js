@@ -46,8 +46,8 @@ export default function LibrarianBookDetailsScreen({route, navigation}) {
       marginVertical: 8,
     },
     heading: {
-      color: '#228844',
-      backgroundColor: '#00aa4444',
+      color: colors.onTertiaryContainer,
+      backgroundColor: colors.tertiaryContainer,
       alignSelf: 'flex-start',
       paddingHorizontal: 10,
       paddingVertical: 3,
@@ -126,7 +126,8 @@ export default function LibrarianBookDetailsScreen({route, navigation}) {
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.heading}>Description</Text>
-        <Text style={{...styles.body, fontSize: 16, color: colors.onBackground}}>
+        <Text
+          style={{...styles.body, fontSize: 16, color: colors.onBackground}}>
           {book.description}
         </Text>
       </View>

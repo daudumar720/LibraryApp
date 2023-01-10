@@ -40,7 +40,7 @@ export default function SampleIssuedBookItem({book}) {
     },
     cover: {
       width: 95,
-      height: 185,
+      height: 210,
       borderRadius: 10,
     },
     book: {
